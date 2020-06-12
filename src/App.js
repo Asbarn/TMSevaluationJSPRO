@@ -1,24 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Form, VideoContainer, Video } from "./components"
+import { useSelector, useDispatch } from 'react-redux'
+
+function renderVideoContainer(myVideos) {
+
+  if (!myVideos) {
+
+    return (
+      <div></div>
+    )
+  }
+  else {
+        return (<VideoContainer>
+      {
+        myVideos.map((elem) => <Video data={elem} />)
+      }
+    </VideoContainer>)
+  }
+
+}
+
 
 function App() {
+
+
+  const myVideos = useSelector(state => state.data);
+  const dispatch = useDispatch();
+  const [inputValue, setInputValue] = useState('');
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Form
+        value={inputValue} onChange={setInputValue}
+        onSubmit={(e) => {
+          if (e !== undefined) {
+            e.preventDefault();
+          }
+          dispatch({ type: 'FETCH', query: inputValue });
+        }}
+        text="Find"
+      />
+      {renderVideoContainer(myVideos)}
     </div>
   );
 }

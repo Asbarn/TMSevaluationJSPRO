@@ -1,0 +1,36 @@
+.myButton{
+    height: 45px;
+	width: 100px;
+	padding: 0px 20px;	
+	font-weight: bold;
+	font-size: 19px;
+	font-family: 'Montserrat', sans-serif;
+	line-height: 19px;
+	border: 0;	
+	border-radius: 0 4px 4px 0;
+	background: linear-gradient(to bottom,#bf3434,#ab0e0e);
+	color:#fff;	
+}
+.myForm{
+    display: flex;
+    flex-direction: row;
+	width: 70%;
+	margin: 35px auto;	
+	text-align: center;
+	font-size: 0;
+	padding: 10px;
+	border-radius: 10px;
+	box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);
+	background: #444;
+    background: rgba(0,0,0,.2);
+}
+input[type=text] {
+    width: calc(100% - 100px);
+	height: 45px;
+	padding: 0px 15px;	
+	font-size: 20px;		
+	font-family: 'Gafata', sans-serif;	
+	border:0;
+	border-radius: 4px  0 0 4px;	
+	color:#555;
+  }
