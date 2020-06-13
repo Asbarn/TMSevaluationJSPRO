@@ -29,11 +29,14 @@ function videoReducer(state = videoState, action) {
 
 }
 const myMiddleware = store => next => action => {
+const maxResults=4;
+
+
     try {
         if (action.type == "FETCH") {
 
-            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${action.query}&key=AIzaSyCJ9aanyS_NBc83zWktBEXnMJaluSJklTo`).then(response => response.json()).then(data => {
-               //console.log(data.items)    //show fetched videos    
+            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${action.query}&key=AIzaSyCJ9aanyS_NBc83zWktBEXnMJaluSJklTo`).then(response => response.json()).then(data => {
+               console.log(data.items)    //show fetched videos    
                 store.dispatch({ type: "SUCCESS", data: data.items });
             })
         }
