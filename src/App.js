@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Form, VideoContainer, Video } from "./components"
+import { Form, VideoContainer, Video, Carousel } from "./components"
 import { useSelector, useDispatch, useStore } from 'react-redux'
 
 
@@ -17,6 +17,15 @@ function App() {
   const [inputValue, setInputValue] = useState('');
   
 
+  //vConta
+  const [width, setWidth] = useState(0);
+  const ref = React.createRef();
+    useEffect(() => {
+        setWidth(ref.current)
+    })
+    //console.log(width);
+
+  
   // useEffect(() => {
   //   console.log("!", myVideos);
   //  });
@@ -33,7 +42,14 @@ function App() {
         }}
         text="Find"
       />
-     { myVideos ? <VideoContainer inputValue={inputValue}> {myVideos.map((elem,index) => {if(index < myCurrentPage*4 && index>=(myCurrentPage-1)*4) return <Video data={elem} />})}  </VideoContainer> : null }
+     { 
+       //myVideos ? <VideoContainer  inputValue={inputValue}> {myVideos.map((elem,index) => {if(index < myCurrentPage*4 && index>=(myCurrentPage-1)*4) return <Video data={elem} />})}  </VideoContainer> : null
+     <Carousel videoCont={width} inputValue={inputValue}> 
+     <VideoContainer refer={ref} > {myVideos.map((elem) =>  <Video data={elem} />)}  </VideoContainer>
+     </Carousel>
+     
+      }
+     
     </div>
   );
 }

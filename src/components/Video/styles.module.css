@@ -1,6 +1,6 @@
 .video{
     height:500px;
-    width:25%;
+    min-width:calc(25% - 30px);
     margin: 0 15px;
     -webkit-perspective: 800px;
     -moz-perspective: 800px;
@@ -81,7 +81,8 @@
 	line-height: 19px;	border: 0;	
 	border-radius: 0 0 4px 4px;
 	background: linear-gradient(to bottom,#bf3434,#ab0e0e);
-	color:#fff;	
+    color:#fff;	
+    cursor:pointer;
 }
 
 .frontVideo{ 

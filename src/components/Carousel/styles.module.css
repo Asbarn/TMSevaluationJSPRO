@@ -1,0 +1,47 @@
+.carouselContainer{
+    position: relative;
+    overflow: hidden;
+    height: 530px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin: auto;
+    width: 75%;  
+    
+}
+
+.myButtons{
+    display:flex;
+    flex-direction: row;
+    justify-content: center; 
+    width:160px;
+    margin:auto;
+ }
+ .arrowButton{
+     height: 20px;
+     min-width: 20px;
+     margin:0 10px;
+     font-weight: bold;
+     font-size: 105x;
+     font-family: 'Montserrat', sans-serif;
+     line-height: 19px;
+     border: 0;	
+     border-radius: 0 4px 4px 0;
+     background: white;	
+ }
+ .pages{
+    height: 20px;
+    width:80px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin: auto;
+    width: 100%;
+    transition: left .2s ease-out;
+ }
+
+ .shifting {
+    transition: left .2s ease-out;
+  }

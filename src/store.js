@@ -5,7 +5,7 @@ const videoState = {
     data: [],
     nextPageToken: "",
     currentPage: 0,
-    totalPages: 0
+    maxPage: 0,
 };
 function fetchVideos(fetchedVideos, maxResults, query, nextPageToken) {
     if (!nextPageToken) {
@@ -48,7 +48,8 @@ function videoReducer(state = videoState, action) {
                 ...state,
                 data: action.data,
                 nextPageToken: action.nextPageToken,
-                currentPage: action.currentPage
+                currentPage: action.currentPage,
+                maxPage: action.maxPage
             };
         case `FAILURE`:
             alert("ERROR IN FETCHING");
@@ -64,15 +65,15 @@ function videoReducer(state = videoState, action) {
         //         currentPage: action.currentPage
         //     }
         case `ADD_DATA`:
-            console.log(action.currentPage);
+            //console.log("CurPage: ",action.currentPage);
             return {
                 ...state,
                 data: [...state.data, ...action.data],
                 nextPageToken: action.nextPageToken,
-                currentPage: action.currentPage
+                currentPage: action.currentPage,
+                maxPage: action.maxPage
             };
         case `MOVE_NEXT`:
-            console.log(action.currentPage);
             return {
                 ...state,
                 currentPage: action.currentPage
@@ -88,10 +89,11 @@ function videoReducer(state = videoState, action) {
 
 }
 const myMiddleware = store => next => action => {
-    const maxResults = 4;
+    const maxResults = 8;
     let fetchedVideos = [];
     let nextPageToken = store.getState().nextPageToken;
     let currentPage = store.getState().currentPage;
+    let maxPage = store.getState().maxPage;
     try {
         if (action.type == "FETCH") {
             fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${action.query}&key=AIzaSyCJ9aanyS_NBc83zWktBEXnMJaluSJklTo&type=video`).
@@ -108,7 +110,7 @@ const myMiddleware = store => next => action => {
                 })
                 .then(() => {
                     store.dispatch({
-                        type: `SUCCESS`, data: fetchedVideos, nextPageToken: nextPageToken, currentPage: 1
+                        type: `SUCCESS`, data: fetchedVideos, nextPageToken: nextPageToken, currentPage: 1, maxPage: (maxResults/4),
                     })
                 }
                 )
@@ -128,7 +130,7 @@ const myMiddleware = store => next => action => {
                 })
                 .then(() => {
                     store.dispatch({
-                        type: `ADD_DATA`, data: fetchedVideos, nextPageToken: nextPageToken, currentPage: ++currentPage
+                        type: `ADD_DATA`, data: fetchedVideos, nextPageToken: nextPageToken, currentPage: ++currentPage, maxPage: maxPage+(maxResults/4)
                     })
                 }
                 )
