@@ -14,31 +14,38 @@
     display:flex;
     flex-direction: row;
     justify-content: center; 
-    width:160px;
+    width:250px;
     margin:auto;
  }
  .arrowButton{
-     height: 20px;
-     min-width: 20px;
-     margin:0 10px;
+     height: 50px;
+     min-width: 50px;
      font-weight: bold;
-     font-size: 105x;
+     font-size: 30px;
      font-family: 'Montserrat', sans-serif;
-     line-height: 19px;
-     border: 0;	
-     border-radius: 0 4px 4px 0;
+     line-height: 50px;
+     border: 1px solid black;	
+     border-style:hidden;
+     border-radius: 4px 4px ;
      background: white;	
+     align-items: flex-start;
+     text-align: center;     
+     cursor: pointer;
  }
- .pages{
-    height: 20px;
-    width:80px;
+ .pagesContainer{
+    height: 50px;
+    width:150px;
     position: relative;
     overflow: hidden;
+ }
+ .pages{
+    height: 50px;
+    width:150px;
+    position: relative;    
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    margin: auto;
-    width: 100%;
+    margin: auto;   
     transition: left .2s ease-out;
  }
 

@@ -7,7 +7,7 @@ import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
 
 function shiftSlide(dir, videoCont, inputValue, dispatch, myCurrentPage, myMaxPage, pageswidth) {
-  console.log(pageswidth.offsetLeft, pageswidth.clientWidth);
+ // console.log(pageswidth.offsetLeft, pageswidth.clientWidth);
 
   //console.log(videoCont.clientWidth, videoCont.offsetLeft, videoCont.style.left);
   //videoCont.classList.add(`${styles.shifting}`)
@@ -17,22 +17,22 @@ function shiftSlide(dir, videoCont, inputValue, dispatch, myCurrentPage, myMaxPa
   //}
 
   if (dir == 1) {
-    if (myCurrentPage == myMaxPage - 1) {
+    if (myCurrentPage == myMaxPage - 2) {
       dispatch({ type: 'FETCH_MORE', query: inputValue });
       videoCont.style.left = (posInitial - (videoCont.clientWidth)) + "px";
-      pageswidth.style.left = ( - 40) + "px";
+      pageswidth.style.left = (posPage- 50) + "px";
     }
     else {
       dispatch({ type: 'MOVE_FORWARD' });
       videoCont.style.left = (posInitial - (videoCont.clientWidth)) + "px";
-      pageswidth.style.left = ( - 40) + "px";
+      pageswidth.style.left = (posPage- 50) + "px";
     }
     //index++;      
   } else if (dir == -1) {
     if (!(myCurrentPage == 1)) {
       dispatch({ type: 'MOVE_BACK' });
       videoCont.style.left = (posInitial + (videoCont.clientWidth)) + "px";
-      pageswidth.style.left = (  40) + "px";
+      pageswidth.style.left = (posPage+50) + "px";
     }
     //index--;      
   }
@@ -97,7 +97,6 @@ export function Carousel({ children, videoCont, inputValue }) {
   for (var i = 1; i <= myMaxPage; i++) {
     pagNumbs.push(i);
   }
-  console.log(pageswidth.offsetLeft)
 
 
   return (
@@ -109,12 +108,10 @@ export function Carousel({ children, videoCont, inputValue }) {
         <button className={styles.arrowButton} onClick={(e) => {
           shiftSlide(-1, videoCont, inputValue, dispatch, myCurrentPage, myMaxPage, pageswidth)
         }}> <FontAwesomeIcon icon={faArrowLeft} /></button>
-
-        <div ref={refPages} className={styles.pages}> {pagNumbs.map((elem) => {
-          return (<div className={styles.arrowButton}> {elem} </div>)
-
-        })} </div>
-
+        <div className={styles.pagesContainer}>
+          <div ref={refPages} className={styles.pages}> {pagNumbs.map((elem) =>  <div className={styles.arrowButton}> {elem} </div>)} 
+          </div>
+        </div>
 
         <button className={styles.arrowButton}
           onClick={(e) => {

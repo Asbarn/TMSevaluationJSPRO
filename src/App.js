@@ -43,10 +43,11 @@ function App() {
         text="Find"
       />
      { 
-       //myVideos ? <VideoContainer  inputValue={inputValue}> {myVideos.map((elem,index) => {if(index < myCurrentPage*4 && index>=(myCurrentPage-1)*4) return <Video data={elem} />})}  </VideoContainer> : null
-     <Carousel videoCont={width} inputValue={inputValue}> 
+       myVideos ? 
+       <Carousel videoCont={width} inputValue={inputValue}> 
      <VideoContainer refer={ref} > {myVideos.map((elem) =>  <Video data={elem} />)}  </VideoContainer>
-     </Carousel>
+     </Carousel>   : null
+     
      
       }
      
