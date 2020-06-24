@@ -14,7 +14,7 @@ function pagesSlide(videoCont, inputValue, dispatch, myPressedPage, myCurrentPag
       dispatch({ type: 'FETCH_MORE', query: inputValue }); dispatch({ type: 'MOVE_FORWARD_PAGE', query: myPressedPage });
       videoCont.style.left = (posInitial - (videoCont.clientWidth * Math.abs(pageDifference))) + "px";
       if (myCurrentPage == 1 && myPressedPage == 3) { pageswidth.style.left = (posPage - 25 * Math.abs(pageDifference)) + "px"; }
-      else if(!(myCurrentPage == 1 && myPressedPage == 2)){ pageswidth.style.left = (posPage - 50 * Math.abs(pageDifference)) + "px"; }
+      else if (!(myCurrentPage == 1 && myPressedPage == 2)) { pageswidth.style.left = (posPage - 50 * Math.abs(pageDifference)) + "px"; }
     }
     else {
       dispatch({ type: 'MOVE_FORWARD_PAGE', query: myPressedPage });
@@ -22,7 +22,7 @@ function pagesSlide(videoCont, inputValue, dispatch, myPressedPage, myCurrentPag
       console.log(myCurrentPage, myPressedPage, myCurrentPage == 1 && myPressedPage != 2);
       if (myCurrentPage == 1 && myPressedPage == 3)
         pageswidth.style.left = (posPage - 25 * Math.abs(pageDifference)) + "px";
-      else if(!(myCurrentPage == 1 && myPressedPage == 2)){
+      else if (!(myCurrentPage == 1 && myPressedPage == 2)) {
         pageswidth.style.left = (posPage - 50 * Math.abs(pageDifference)) + "px";
       }
     }
@@ -31,7 +31,7 @@ function pagesSlide(videoCont, inputValue, dispatch, myPressedPage, myCurrentPag
     if (!(myCurrentPage == 1)) {
       dispatch({ type: 'MOVE_BACK_PAGE', query: myPressedPage });
       videoCont.style.left = (posInitial + (videoCont.clientWidth * Math.abs(pageDifference))) + "px";
-      if (myPressedPage != 1 )
+      if (myPressedPage != 1)
         pageswidth.style.left = (posPage + 50 * Math.abs(pageDifference)) + "px";
     }
 
@@ -58,7 +58,6 @@ function shiftSlide(dir, videoCont, inputValue, dispatch, myCurrentPage, myMaxPa
       if (myCurrentPage != 1)
         pageswidth.style.left = (posPage - 50) + "px";
     }
-    //index++;      
   } else if (dir == -1) {
     if (!(myCurrentPage == 1)) {
       dispatch({ type: 'MOVE_BACK' });
@@ -70,50 +69,50 @@ function shiftSlide(dir, videoCont, inputValue, dispatch, myCurrentPage, myMaxPa
   }
 }
 
-// function touchStart(e,videoCont,posX1){
-//   e = e || window.event;
-//   e.preventDefault();
-//   videoCont.offsetLeft = videoCont.offsetLeft;
 
-//   if (e.type == 'touchstart') {
-//     posX1 = e.touches[0].clientX;
-//   } else {
-//     posX1 = e.clientX;
-//     document.onmouseup = onTouchEnd;
-//     document.onmousemove = touchMove(e,videoCont,posX1,posX2);
-//   }
-// }
+function dragEnd(e, videoCont, posInitial, inputValue, dispatch, myCurrentPage, myMaxPage, pageswidth) {
+  e.preventDefault();
+  let posFinal = videoCont.offsetLeft;
+  console.log(posInitial, posFinal);
+  if (posFinal - posInitial < -100) {
+    shiftSlide(1, videoCont, inputValue, dispatch, myCurrentPage, myMaxPage, pageswidth);
 
-function touchMove(e, videoCont, posX1, posX2) {
-  e = e || window.event;
-
-  if (e.type == 'dragmove') {
-    posX2 = posX1 - e.clientX;
-    posX1 = e.clientX;
+  } else if (posFinal - posInitial > 100) {
+    shiftSlide(-1, videoCont, inputValue, dispatch, myCurrentPage, myMaxPage, pageswidth);
   } else {
-    posX2 = posX1 - e.clientX;
-    posX1 = e.clientX;
+    console.log("MOVE_ERROR");
   }
+  videoCont.style.left = videoCont.offsetLeft + "px";
+  videoCont.onmouseup = null;
+  videoCont.onmousemove = null;
+}
+function dragAction(e, videoCont, posX, inputValue, dispatch, myCurrentPage, myMaxPage, pageswidth) {
+
+  let posX1 = posX, posX2;
+
+  posX2 = posX1 - e.clientX;
+  posX1 = e.clientX;
+
   videoCont.style.left = (videoCont.offsetLeft - posX2) + "px";
 }
 
-function touchEnd(e, videoCont, posFinal) {
-  posFinal = videoCont.offsetLeft;
-  if (posFinal - videoCont.offsetLeft < -100) {
-    shiftSlide(1, 'drag');
-  } else if (posFinal - videoCont.offsetLeft > 100) {
-    shiftSlide(-1, 'drag');
+function touchStart(e, videoCont, inputValue, dispatch, myCurrentPage, myMaxPage, pageswidth) {
+  e.preventDefault();
+  let posInitial = videoCont.offsetLeft;
+  let posX1;
+  if (e.type == 'touchstart') {
+    posX1 = e.touches[0].clientX;
   } else {
-    videoCont.style.left = (videoCont.offsetLeft) + "px";
+    posX1 = e.clientX;
   }
+  videoCont.onmousemove = (e) => { dragAction(e, videoCont, posX1, inputValue, dispatch, myCurrentPage, myMaxPage, pageswidth) };
+  videoCont.onmouseup = (e) => { dragEnd(e, videoCont, posInitial, inputValue, dispatch, myCurrentPage, myMaxPage, pageswidth) };
 
-  document.onmouseup = null;
-  document.onmousemove = null;
 }
 
+
+
 export function Carousel({ children, videoCont, inputValue }) {
-  //console.log(videoCont);
-  let posX1 = 0, posX2 = 0, posFinal;
   const dispatch = useDispatch();
   let myCurrentPage = useSelector(state => state.currentPage);
   let myMaxPage = useSelector(state => state.maxPage);
@@ -130,7 +129,9 @@ export function Carousel({ children, videoCont, inputValue }) {
 
   return (
     <div className={styles.carousel}>
-      <div className={styles.carouselContainer}>
+      <div
+        onMouseDown={(e) => { touchStart(e, videoCont, inputValue, dispatch, myCurrentPage, myMaxPage, pageswidth) }}
+        className={styles.carouselContainer}>
         {children}
       </div>
       <div className={styles.myButtons}>

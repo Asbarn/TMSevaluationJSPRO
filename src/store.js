@@ -86,11 +86,11 @@ const myMiddleware = store => next => action => {
     let maxPage = store.getState().maxPage;
     try {
         if (action.type == "FETCH") {
-            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${action.query}&key=AIzaSyBmZqRz6EcOYH-tvLGtzUO3xHLP9HEa13A&type=video`).
+            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${action.query}&key=AIzaSyCJ9aanyS_NBc83zWktBEXnMJaluSJklTo&type=video`).
                 then(response => response.json()).
                 then(data => { nextPageToken = data.nextPageToken; return data.items }).
                 then(videos => {
-                    return Promise.all(videos.map((element) => fetch(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyBmZqRz6EcOYH-tvLGtzUO3xHLP9HEa13A&id=${element.id.videoId}&part=snippet,statistics`)
+                    return Promise.all(videos.map((element) => fetch(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyCJ9aanyS_NBc83zWktBEXnMJaluSJklTo&id=${element.id.videoId}&part=snippet,statistics`)
                         .then((response) => response.json())
                         .then(res => {
                             fetchedVideos.push(res.items[0]);
@@ -106,11 +106,11 @@ const myMiddleware = store => next => action => {
                 )
         }
         else if (action.type == "FETCH_MORE") {
-            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${action.query}&key=AIzaSyBmZqRz6EcOYH-tvLGtzUO3xHLP9HEa13A&type=video&pageToken=${nextPageToken}`).
+            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${action.query}&key=AIzaSyCJ9aanyS_NBc83zWktBEXnMJaluSJklTo&type=video&pageToken=${nextPageToken}`).
                 then(response => response.json()).
                 then(data => { nextPageToken = data.nextPageToken; return data.items }).
                 then(videos => {
-                    return Promise.all(videos.map((element) => fetch(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyBmZqRz6EcOYH-tvLGtzUO3xHLP9HEa13A&id=${element.id.videoId}&part=snippet,statistics`)
+                    return Promise.all(videos.map((element) => fetch(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyCJ9aanyS_NBc83zWktBEXnMJaluSJklTo&id=${element.id.videoId}&part=snippet,statistics`)
                         .then((response) => response.json())
                         .then(res => {
                             fetchedVideos.push(res.items[0]);
