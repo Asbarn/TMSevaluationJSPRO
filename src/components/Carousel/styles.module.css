@@ -32,6 +32,22 @@
      text-align: center;     
      cursor: pointer;
  }
+ .arrowButtonActive{
+   height: 50px;
+   min-width: 50px;
+   font-weight: bold;
+   font-size: 30px;
+   font-family: 'Montserrat', sans-serif;
+   line-height: 50px;
+   border: 1px solid black;	
+   border-style:hidden;
+   border-radius: 4px 4px ;
+   background: white;	
+   align-items: flex-start;
+   text-align: center;     
+   cursor: pointer;
+    background: linear-gradient(to bottom,#bf3434,#ab0e0e);
+ }
  .pagesContainer{
     height: 50px;
     width:150px;

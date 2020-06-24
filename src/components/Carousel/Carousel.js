@@ -4,41 +4,70 @@ import { useSelector, useDispatch, useStore } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
+function pagesSlide(videoCont, inputValue, dispatch, myPressedPage, myCurrentPage, myMaxPage, pageswidth) {
+
+  let posInitial = videoCont.offsetLeft;
+  let posPage = pageswidth.offsetLeft;
+  let pageDifference = myPressedPage - myCurrentPage;
+  if (pageDifference > 0) {
+    if (myCurrentPage >= myMaxPage - 2) {
+      dispatch({ type: 'FETCH_MORE', query: inputValue }); dispatch({ type: 'MOVE_FORWARD_PAGE', query: myPressedPage });
+      videoCont.style.left = (posInitial - (videoCont.clientWidth * Math.abs(pageDifference))) + "px";
+      if (myCurrentPage == 1 && myPressedPage == 3) { pageswidth.style.left = (posPage - 25 * Math.abs(pageDifference)) + "px"; }
+      else if(!(myCurrentPage == 1 && myPressedPage == 2)){ pageswidth.style.left = (posPage - 50 * Math.abs(pageDifference)) + "px"; }
+    }
+    else {
+      dispatch({ type: 'MOVE_FORWARD_PAGE', query: myPressedPage });
+      videoCont.style.left = (posInitial - (videoCont.clientWidth * Math.abs(pageDifference))) + "px";
+      console.log(myCurrentPage, myPressedPage, myCurrentPage == 1 && myPressedPage != 2);
+      if (myCurrentPage == 1 && myPressedPage == 3)
+        pageswidth.style.left = (posPage - 25 * Math.abs(pageDifference)) + "px";
+      else if(!(myCurrentPage == 1 && myPressedPage == 2)){
+        pageswidth.style.left = (posPage - 50 * Math.abs(pageDifference)) + "px";
+      }
+    }
+    //index++;      
+  } else if (pageDifference < 0) {
+    if (!(myCurrentPage == 1)) {
+      dispatch({ type: 'MOVE_BACK_PAGE', query: myPressedPage });
+      videoCont.style.left = (posInitial + (videoCont.clientWidth * Math.abs(pageDifference))) + "px";
+      if (myPressedPage != 1 )
+        pageswidth.style.left = (posPage + 50 * Math.abs(pageDifference)) + "px";
+    }
+
+  }
+
+}
 
 
 function shiftSlide(dir, videoCont, inputValue, dispatch, myCurrentPage, myMaxPage, pageswidth) {
- // console.log(pageswidth.offsetLeft, pageswidth.clientWidth);
 
-  //console.log(videoCont.clientWidth, videoCont.offsetLeft, videoCont.style.left);
-  //videoCont.classList.add(`${styles.shifting}`)
-  //if (allowShift) {
   let posInitial = videoCont.offsetLeft;
   let posPage = pageswidth.offsetLeft;
-  //}
 
   if (dir == 1) {
-    if (myCurrentPage == myMaxPage - 2) {
+    if (myCurrentPage >= myMaxPage - 2) {
       dispatch({ type: 'FETCH_MORE', query: inputValue });
       videoCont.style.left = (posInitial - (videoCont.clientWidth)) + "px";
-      pageswidth.style.left = (posPage- 50) + "px";
+      if (myCurrentPage != 1)
+        pageswidth.style.left = (posPage - 50) + "px";
     }
     else {
       dispatch({ type: 'MOVE_FORWARD' });
       videoCont.style.left = (posInitial - (videoCont.clientWidth)) + "px";
-      pageswidth.style.left = (posPage- 50) + "px";
+      if (myCurrentPage != 1)
+        pageswidth.style.left = (posPage - 50) + "px";
     }
     //index++;      
   } else if (dir == -1) {
     if (!(myCurrentPage == 1)) {
       dispatch({ type: 'MOVE_BACK' });
       videoCont.style.left = (posInitial + (videoCont.clientWidth)) + "px";
-      pageswidth.style.left = (posPage+50) + "px";
+      if (myCurrentPage != 2)
+        pageswidth.style.left = (posPage + 50) + "px";
     }
-    //index--;      
-  }
-  //};
 
-  //allowShift = false;
+  }
 }
 
 // function touchStart(e,videoCont,posX1){
@@ -109,7 +138,8 @@ export function Carousel({ children, videoCont, inputValue }) {
           shiftSlide(-1, videoCont, inputValue, dispatch, myCurrentPage, myMaxPage, pageswidth)
         }}> <FontAwesomeIcon icon={faArrowLeft} /></button>
         <div className={styles.pagesContainer}>
-          <div ref={refPages} className={styles.pages}> {pagNumbs.map((elem) =>  <div className={styles.arrowButton}> {elem} </div>)} 
+          <div ref={refPages} className={styles.pages}> {pagNumbs.map((elem, index) => <div onClick={() => { pagesSlide(videoCont, inputValue, dispatch, elem, myCurrentPage, myMaxPage, pageswidth) }}
+            className={((index + 1) == myCurrentPage ? styles.arrowButtonActive : styles.arrowButton)}> {elem} </div>)}
           </div>
         </div>
 

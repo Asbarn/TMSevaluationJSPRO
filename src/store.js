@@ -86,11 +86,11 @@ const myMiddleware = store => next => action => {
     let maxPage = store.getState().maxPage;
     try {
         if (action.type == "FETCH") {
-            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${action.query}&key=AIzaSyDws_B7r06gFEFXZ5VroFWMFe4QtfgPNLc&type=video`).
+            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${action.query}&key=AIzaSyBmZqRz6EcOYH-tvLGtzUO3xHLP9HEa13A&type=video`).
                 then(response => response.json()).
                 then(data => { nextPageToken = data.nextPageToken; return data.items }).
                 then(videos => {
-                    return Promise.all(videos.map((element) => fetch(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDws_B7r06gFEFXZ5VroFWMFe4QtfgPNLc&id=${element.id.videoId}&part=snippet,statistics`)
+                    return Promise.all(videos.map((element) => fetch(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyBmZqRz6EcOYH-tvLGtzUO3xHLP9HEa13A&id=${element.id.videoId}&part=snippet,statistics`)
                         .then((response) => response.json())
                         .then(res => {
                             fetchedVideos.push(res.items[0]);
@@ -106,11 +106,11 @@ const myMiddleware = store => next => action => {
                 )
         }
         else if (action.type == "FETCH_MORE") {
-            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${action.query}&key=AIzaSyDws_B7r06gFEFXZ5VroFWMFe4QtfgPNLc&type=video&pageToken=${nextPageToken}`).
+            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${action.query}&key=AIzaSyBmZqRz6EcOYH-tvLGtzUO3xHLP9HEa13A&type=video&pageToken=${nextPageToken}`).
                 then(response => response.json()).
                 then(data => { nextPageToken = data.nextPageToken; return data.items }).
                 then(videos => {
-                    return Promise.all(videos.map((element) => fetch(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDws_B7r06gFEFXZ5VroFWMFe4QtfgPNLc&id=${element.id.videoId}&part=snippet,statistics`)
+                    return Promise.all(videos.map((element) => fetch(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyBmZqRz6EcOYH-tvLGtzUO3xHLP9HEa13A&id=${element.id.videoId}&part=snippet,statistics`)
                         .then((response) => response.json())
                         .then(res => {
                             fetchedVideos.push(res.items[0]);
@@ -133,6 +133,16 @@ const myMiddleware = store => next => action => {
         else if (action.type == "MOVE_BACK") {
             store.dispatch({
                 type: `MOVE_PREV`, currentPage: --currentPage
+            })
+        }
+        else if (action.type == "MOVE_FORWARD_PAGE") {
+            store.dispatch({
+                type: `MOVE_NEXT`, currentPage: action.query
+            })
+        }
+        else if (action.type == "MOVE_BACK_PAGE") {
+            store.dispatch({
+                type: `MOVE_PREV`, currentPage: action.query
             })
         }
     }
