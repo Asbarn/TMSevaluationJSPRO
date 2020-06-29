@@ -11,6 +11,7 @@
 	background: linear-gradient(to bottom,#bf3434,#ab0e0e);
 	color:#fff;	
 	cursor:pointer;
+	outline : none;
 }
 .myForm{
     display: flex;

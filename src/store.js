@@ -79,18 +79,18 @@ function videoReducer(state = videoState, action) {
 
 }
 const myMiddleware = store => next => action => {
-    const maxResults = 12;
+    const maxResults = 16;
     let fetchedVideos = [];
     let nextPageToken = store.getState().nextPageToken;
     let currentPage = store.getState().currentPage;
     let maxPage = store.getState().maxPage;
     try {
         if (action.type == "FETCH") {
-            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${action.query}&key=AIzaSyBmZqRz6EcOYH-tvLGtzUO3xHLP9HEa13A&type=video`).
+            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${action.query}&key=AIzaSyDws_B7r06gFEFXZ5VroFWMFe4QtfgPNLc&type=video`).
                 then(response => response.json()).
                 then(data => { nextPageToken = data.nextPageToken; return data.items }).
                 then(videos => {
-                    return Promise.all(videos.map((element) => fetch(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyBmZqRz6EcOYH-tvLGtzUO3xHLP9HEa13A&id=${element.id.videoId}&part=snippet,statistics`)
+                    return Promise.all(videos.map((element) => fetch(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDws_B7r06gFEFXZ5VroFWMFe4QtfgPNLc&id=${element.id.videoId}&part=snippet,statistics`)
                         .then((response) => response.json())
                         .then(res => {
                             fetchedVideos.push(res.items[0]);
@@ -106,11 +106,11 @@ const myMiddleware = store => next => action => {
                 )
         }
         else if (action.type == "FETCH_MORE") {
-            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${action.query}&key=AIzaSyBmZqRz6EcOYH-tvLGtzUO3xHLP9HEa13A&type=video&pageToken=${nextPageToken}`).
+            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${action.query}&key=AIzaSyDws_B7r06gFEFXZ5VroFWMFe4QtfgPNLc&type=video&pageToken=${nextPageToken}`).
                 then(response => response.json()).
                 then(data => { nextPageToken = data.nextPageToken; return data.items }).
                 then(videos => {
-                    return Promise.all(videos.map((element) => fetch(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyBmZqRz6EcOYH-tvLGtzUO3xHLP9HEa13A&id=${element.id.videoId}&part=snippet,statistics`)
+                    return Promise.all(videos.map((element) => fetch(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDws_B7r06gFEFXZ5VroFWMFe4QtfgPNLc&id=${element.id.videoId}&part=snippet,statistics`)
                         .then((response) => response.json())
                         .then(res => {
                             fetchedVideos.push(res.items[0]);

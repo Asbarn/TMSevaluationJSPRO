@@ -6,29 +6,18 @@ import { useSelector, useDispatch, useStore } from 'react-redux'
 
 
 
-function App() {  
+function App() {
   let myVideos = useSelector(state => state.data);
-  let myCurrentPage=useSelector(state => state.currentPage);
-  //myVideos=store.getState().data;
-  
-  //store.subscribe(()=>{myVideos=store.getState().data;console.log( store.getState().data)});
-  // myVideos = useSelector(state => state.data);
+  let myCurrentPage = useSelector(state => state.currentPage);
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
-  
 
-  //vConta
-  const [width, setWidth] = useState(0);
+  //vCont
+  const [videoCont, setVideoCont] = useState(0);
   const ref = React.createRef();
-    useEffect(() => {
-        setWidth(ref.current)
-    })
-    //console.log(width);
-
-  
-  // useEffect(() => {
-  //   console.log("!", myVideos);
-  //  });
+  useEffect(() => {
+    setVideoCont(ref.current)
+  })
   return (
     <div className="App">
       <Form
@@ -40,17 +29,15 @@ function App() {
           dispatch({ type: 'FETCH', query: inputValue });
 
         }}
-        text="Find"
+        text="Search"
       />
-     { 
-       myVideos ? 
-       <Carousel videoCont={width} inputValue={inputValue}> 
-     <VideoContainer refer={ref} > {myVideos.map((elem) =>  <Video data={elem} />)}  </VideoContainer>
-     </Carousel>   : null
-     
-     
+      {
+        myCurrentPage ?
+          <Carousel videoCont={videoCont} inputValue={inputValue}>
+            <VideoContainer refer={ref} > {myVideos.map((elem) => <Video data={elem} />)}  </VideoContainer>
+          </Carousel> : <div className={StyleSheet.nullCarousel}> </div>
       }
-     
+
     </div>
   );
 }

@@ -62,5 +62,3 @@ export function Video({ data }) {
     )
 
 }
-
-//style={{background:url(`${data.snippet.thumbnails.default.url}`)}}
